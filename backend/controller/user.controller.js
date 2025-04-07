@@ -83,3 +83,17 @@ import validator from 'validator'
         return errorHandler(res,500,`server error ${err.message}`)
     }
  }
+ //! ALL USERS
+ export const allUsers=async (req,res)=>{
+    try {
+        const users=await User.find({})
+        if(users){
+            return errorHandler(res,200,"get all users",users)
+        }else{
+            return errorHandler(res,400,"users not found")
+        }
+        
+    } catch (err) {
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+ }
