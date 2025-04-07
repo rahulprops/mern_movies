@@ -117,3 +117,36 @@ import validator from 'validator'
         return errorHandler(res,500,`server error ${err.message}`)
     }
  }
+
+ //! update current users
+ 
+
+export const updateCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+
+    if (user) {
+      user.username = req.body.username || user.username;
+      user.email = req.body.email || user.email;
+
+      if (req.body.password) {
+        const hashpass = await bcrypt.hash(req.body.password, 12);
+        user.password = hashpass;
+      }
+
+      const updatedUser = await user.save();
+
+      const data = {
+        id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+      };
+
+      return errorHandler(res, 200, "User updated successfully", data);
+    } else {
+      return errorHandler(res, 404, "User not found");
+    }
+  } catch (err) {
+    return errorHandler(res, 500, `Server error: ${err.message}`);
+  }
+};
