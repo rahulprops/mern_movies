@@ -21,3 +21,12 @@ export const authMiddleware = async (req,res,next)=>{
     req.user=isUser
     next()
 }
+
+export const isAdmin = async (req,res,next)=>{
+    
+    if(req.user.isAdmin){
+       next()
+    }else{
+        return errorHandler(res,400,"not admin login")
+    }
+}
