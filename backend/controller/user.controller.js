@@ -97,3 +97,23 @@ import validator from 'validator'
         return errorHandler(res,500,`server error ${err.message}`)
     }
  }
+
+ //! get current usersProfile
+ export const getCurrentUsersProfile=async (req,res)=>{
+    try {
+        const user = await User.findById(req.user._id)
+        if(user){
+            const data={
+                id:user._id,
+                username:user.username,
+                email:user.email
+            }
+            return errorHandler(res,200,"get profile sucessful",data)
+        }else{
+            return errorHandler(res,400,"get profile failed")
+        }
+        
+    } catch (err) {
+        return errorHandler(res,500,`server error ${err.message}`)
+    }
+ }
